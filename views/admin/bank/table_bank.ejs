@@ -31,7 +31,7 @@
                 </td>
                 <td>
                   <form action="/admin/bank/<%= bank[i].id %>?_method=DELETE" method="POST">
-                    <a href="javascript:void(0)" type="button" class="btn btn-warning btn-circle btn-sm button-update" data-id="<%= bank[i].id %>" data-name="<%= bank[i] %>"><i class="fas fa-edit"></i></a>
+                    <a href="javascript:void(0)" type="button" class="btn btn-warning btn-circle btn-sm button-update" data-id="<%= bank[i].id %>" data-nama="<%= bank[i].nama %>" data-namabank="<%= bank[i].namaBank %>" data-nomorrekening="<%= bank[i].nomorRekening %>"><i class="fas fa-edit"></i></a>
                     <button type="submit" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>
                   </form>
                 </td>

@@ -14,7 +14,10 @@ router.route('/category/:id')
 
 router.route('/bank')
     .get(adminController.viewBank)
-    .post(upload, adminController.addBank);
+    .post(upload, adminController.addBank)
+    .put(upload, adminController.editBank);
+router.route('/bank/:id')
+    .delete(adminController.deleteBank);
 
 router.route('/item')
     .get(adminController.viewItem);
