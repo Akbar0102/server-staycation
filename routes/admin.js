@@ -22,6 +22,12 @@ router.route('/bank/:id')
 router.route('/item')
     .get(adminController.viewItem)
     .post(uploadMultiple, adminController.addItem);
+router.route('/item/show-image/:id')
+    .get(adminController.showImageItem);
+router.route('/item/:id')
+    .get(adminController.showEditItem)
+    .put(uploadMultiple, adminController.editItem)
+    .delete(adminController.deleteItem);
 
 router.route('/booking')
     .get(adminController.viewBooking);
