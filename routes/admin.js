@@ -39,6 +39,13 @@ router.route('/item/update/feature')
     .put(upload, adminController.editFeature);
 router.route('/item/:itemId/feature/:id')
     .delete(adminController.deleteFeature);
+//endpoint item activity
+router.route('/item/add/activity')
+    .post(upload, adminController.addActiviy);
+router.route('/item/update/activity')
+    .put(upload, adminController.editActivity);
+router.route('/item/:itemId/activity/:id')
+    .delete(adminController.deleteActivity);
 
 router.route('/booking')
     .get(adminController.viewBooking);
