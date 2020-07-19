@@ -12,6 +12,7 @@ router.route('/category')
 router.route('/category/:id')
     .delete(adminController.deleteCategory);
 
+//endpoint bank
 router.route('/bank')
     .get(adminController.viewBank)
     .post(upload, adminController.addBank)
@@ -19,6 +20,7 @@ router.route('/bank')
 router.route('/bank/:id')
     .delete(adminController.deleteBank);
 
+//endpoint item
 router.route('/item')
     .get(adminController.viewItem)
     .post(uploadMultiple, adminController.addItem);
@@ -28,6 +30,15 @@ router.route('/item/:id')
     .get(adminController.showEditItem)
     .put(uploadMultiple, adminController.editItem)
     .delete(adminController.deleteItem);
+//endpoint item feature
+router.route('/item/show-detail-item/:itemId')
+    .get(adminController.viewDetailItem);
+router.route('/item/add/feature')
+    .post(upload, adminController.addFeature);
+router.route('/item/update/feature')
+    .put(upload, adminController.editFeature);
+router.route('/item/:itemId/feature/:id')
+    .delete(adminController.deleteFeature);
 
 router.route('/booking')
     .get(adminController.viewBooking);
