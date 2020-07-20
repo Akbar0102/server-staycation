@@ -55,7 +55,14 @@ router.route('/item/update/activity')
 router.route('/item/:itemId/activity/:id')
     .delete(adminController.deleteActivity);
 
+//endpoint booking
 router.route('/booking')
     .get(adminController.viewBooking);
+router.route('/booking/:id')
+    .get(adminController.showDetailBooking);
+router.route('/booking/:id/confirmation')
+    .put(adminController.actionConfirmation);
+router.route('/booking/:id/reject')
+    .put(adminController.actionReject);
 
 module.exports = router;
