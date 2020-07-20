@@ -4,15 +4,71 @@ const Item = require('../models/Item');
 const Feature = require('../models/Feature');
 const Activity = require('../models/Activity');
 const Image = require('../models/Image');
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 const fs = require('fs-extra');
 const path = require('path');
 
 module.exports = {
+    viewSignin: async (req, res) => {
+        try {
+            const alertMessage = req.flash('alertMessage');
+            const alertStatus = req.flash('alertStatus');
+            const alert = {message: alertMessage, status: alertStatus};
+            if(req.session.user == null || req.session.user == undefined){
+                res.render('index', { 
+                    alert,
+                    title: 'Staycation | Login'
+                });
+            }else{
+                res.redirect('/admin/dashboard');
+            }
+        } catch (error) {
+            res.redirect('/admin/signin');
+        }
+    },
+    actionSignin: async (req, res) => {
+        try {
+            const {username, password} = req.body;
+            const user = await User.findOne({username: username});
+            if(!user){
+                req.flash('alertMessage', 'User yang anda masukan tidak ada!');
+                req.flash('alertStatus', 'danger'); 
+                res.redirect('/admin/signin');
+            }
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
+            if(!isPasswordMatch){
+                req.flash('alertMessage', 'Password yang anda masukan tidak cocok!');
+                req.flash('alertStatus', 'danger'); 
+                res.redirect('/admin/signin');
+            }
+
+            req.session.user = {
+                id: user.id,
+                username: user.username
+            }
+
+            res.redirect('/admin/dashboard');
+        } catch (error) {
+            res.redirect('/admin/signin');
+        }
+    },
+    actionLogout: async (req, res) => {
+        req.session.destroy();
+        res.redirect('/admin/signin');
+    },
+
     viewDashboard: (req, res) => {
-        res.render('admin/dashboard/view_dashboard', {
-            title: 'Staycation | Dashboard'
-        });
+        try {
+            res.render('admin/dashboard/view_dashboard', {
+                title: 'Staycation | Dashboard',
+                user: req.session.user
+            });
+            
+        } catch (error) {
+            
+        }
     },
 
     viewCategory: async (req, res) => {
@@ -23,7 +79,8 @@ module.exports = {
             const alert = {message: alertMessage, status: alertStatus};
             res.render('admin/category/view_category', {category, 
                 alert,
-                title: 'Staycation | Category'
+                title: 'Staycation | Category',
+                user: req.session.user
             });
             
         } catch (error) {
@@ -84,7 +141,8 @@ module.exports = {
             res.render('admin/bank/view_bank', {
                 title: 'Staycation | Bank',
                 alert,
-                bank
+                bank,
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -170,7 +228,8 @@ module.exports = {
                 category,
                 alert,
                 item,
-                action: 'view'
+                action: 'view',
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -224,7 +283,8 @@ module.exports = {
                 title: 'Staycation | Show ImageItem', 
                 alert,
                 item,
-                action: 'show image'
+                action: 'show image',
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -248,7 +308,8 @@ module.exports = {
                 alert,
                 item,
                 action: 'edit',
-                category
+                category,
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -341,7 +402,8 @@ module.exports = {
                 alert,
                 itemId,
                 feature,
-                activity
+                activity,
+                user: req.session.user
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -507,7 +569,8 @@ module.exports = {
 
     viewBooking: (req, res) => {
         res.render('admin/booking/view_booking', {
-            title: 'Staycation | Booking'
+            title: 'Staycation | Booking',
+            user: req.session.user
         });
     }
 }
